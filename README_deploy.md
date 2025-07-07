@@ -4,7 +4,7 @@
 ```bash
 git init
 git add .
-git commit -m "Update: character, NPC, building, jalan, audio"
+git commit -m "Update: Full Simulation - character, NPC, building, road, audio, dialog"
 git branch -M main
 git remote add origin https://github.com/username/3d-delta-henna.git
 git push -u origin main
