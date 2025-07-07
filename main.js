@@ -78,7 +78,35 @@ audioLoader.load('ambient.mp3', function(buffer) {
 const keys = {};
 document.addEventListener("keydown", (e) => keys[e.key.toLowerCase()] = true);
 document.addEventListener("keyup", (e) => keys[e.key.toLowerCase()] = false);
+let showDialog = false;
+let dialogIndex = 0;
+const dialogLines = [
+  'Hai! Aku Shira. Senang bertemu kamu.',
+  'Apa kamu tersesat? Dunia ini luas, tapi kamu tidak sendirian.',
+  'Ingat, kamu bisa belajar dari setiap langkahmu.'
+];
 
+const dialogBox = document.createElement('div');
+dialogBox.style.position = 'absolute';
+dialogBox.style.bottom = '150px';
+dialogBox.style.left = '50%';
+dialogBox.style.transform = 'translateX(-50%)';
+dialogBox.style.background = 'rgba(0,0,0,0.6)';
+dialogBox.style.color = 'white';
+dialogBox.style.padding = '10px 20px';
+dialogBox.style.borderRadius = '8px';
+dialogBox.style.display = 'none';
+document.body.appendChild(dialogBox);
+
+document.addEventListener('keydown', (e) => {
+  if (e.key.toLowerCase() === 'e' && player.position.distanceTo(npc.position) < 2) {
+    showDialog = true;
+    dialogBox.innerText = dialogLines[dialogIndex];
+    dialogBox.style.display = 'block';
+    dialogIndex = (dialogIndex + 1) % dialogLines.length;
+  }
+});
+  
 function animate() {
   requestAnimationFrame(animate);
 
