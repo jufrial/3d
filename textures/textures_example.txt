@@ -1,1 +1,1 @@
-
+This is a sample textures file. Replace with real assets.
