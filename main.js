@@ -98,3 +98,17 @@ function animate() {
   renderer.render(scene, camera);
 }
 animate();
+
+
+// === LOAD GLB CHARACTER ===
+import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.152.2/examples/jsm/loaders/GLTFLoader.js';
+
+const loader = new GLTFLoader();
+loader.load('anime_girl_character.glb', function(gltf) {
+  const model = gltf.scene;
+  model.scale.set(1.5, 1.5, 1.5);
+  model.position.set(2, 0, 2);
+  scene.add(model);
+}, undefined, function(error) {
+  console.error(error);
+});
