@@ -1,46 +1,8 @@
-/* style.css */
 
-body, html {
+body {
   margin: 0;
-  padding: 0;
   overflow: hidden;
-  background: #000;
-  font-family: sans-serif;
 }
-
-#canvas3d {
+canvas {
   display: block;
-  width: 100vw;
-  height: 100vh;
-}
-
-#dialog-box {
-  position: absolute;
-  bottom: 120px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.9);
-  color: #000;
-  padding: 10px 20px;
-  border-radius: 10px;
-  font-size: 16px;
-  z-index: 10;
-  max-width: 80%;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-
-/* Joystick Area */
-#joystick-container {
-  position: absolute;
-  bottom: 30px;
-  left: 30px;
-  width: 100px;
-  height: 100px;
-  z-index: 15;
-}
-
-#joystick {
-  width: 100px;
-  height: 100px;
 }
