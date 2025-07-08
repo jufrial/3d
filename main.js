@@ -1,28 +1,70 @@
-import * as THREE from 'https://cdn.skypack.dev/three';
+// joystick.js
 
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x87ceeb); // langit biru
+class VirtualJoystick {
+  constructor(containerId, callback) {
+    this.container = document.getElementById(containerId);
+    this.callback = callback;
+    this.active = false;
+    this.center = { x: 0, y: 0 };
+    this.touchId = null;
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-camera.position.z = 5;
+    this.stick = document.createElement("div");
+    this.stick.style.width = "60px";
+    this.stick.style.height = "60px";
+    this.stick.style.background = "rgba(255,255,255,0.6)";
+    this.stick.style.borderRadius = "50%";
+    this.stick.style.position = "absolute";
+    this.stick.style.left = "20px";
+    this.stick.style.top = "20px";
+    this.stick.style.transform = "translate(-50%, -50%)";
+    this.container.appendChild(this.stick);
 
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+    this.container.addEventListener("touchstart", this.start.bind(this));
+    this.container.addEventListener("touchmove", this.move.bind(this));
+    this.container.addEventListener("touchend", this.end.bind(this));
+  }
 
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+  start(event) {
+    const touch = event.changedTouches[0];
+    this.touchId = touch.identifier;
+    this.center = { x: touch.clientX, y: touch.clientY };
+    this.stick.style.left = `${touch.clientX}px`;
+    this.stick.style.top = `${touch.clientY}px`;
+    this.active = true;
+  }
 
-const light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(0, 1, 1).normalize();
-scene.add(light);
+  move(event) {
+    if (!this.active) return;
+    for (let touch of event.changedTouches) {
+      if (touch.identifier === this.touchId) {
+        const dx = touch.clientX - this.center.x;
+        const dy = touch.clientY - this.center.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const maxDist = 40;
 
-function animate() {
-  requestAnimationFrame(animate);
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
-  renderer.render(scene, camera);
+        const angle = Math.atan2(dy, dx);
+        const limitedX = Math.cos(angle) * Math.min(maxDist, dist);
+        const limitedY = Math.sin(angle) * Math.min(maxDist, dist);
+
+        this.stick.style.left = `${this.center.x + limitedX}px`;
+        this.stick.style.top = `${this.center.y + limitedY}px`;
+
+        this.callback({ x: limitedX / maxDist, y: limitedY / maxDist });
+      }
+    }
+  }
+
+  end(event) {
+    for (let touch of event.changedTouches) {
+      if (touch.identifier === this.touchId) {
+        this.stick.style.left = `20px`;
+        this.stick.style.top = `20px`;
+        this.callback({ x: 0, y: 0 });
+        this.active = false;
+      }
+    }
+  }
 }
-animate();
+
+// Export class (optional)
+window.VirtualJoystick = VirtualJoystick;
