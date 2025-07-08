@@ -1,17 +1,22 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dunia Juf 3D</title>
+
+  <!-- Gaya default dan joystick -->
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="joystick.css" />
 </head>
-  <link rel="stylesheet" href="joystick.css">
-  <script src="joystick.js"></script>
-  
 <body>
-  <canvas id="canvas3d"></canvas>
-  <script type="module" src="main.js"></script>
+
+  <!-- Tidak perlu canvas ID karena Three.js akan membuat otomatis -->
+  
+  <!-- Joystick kontrol -->
+  <script src="joystick.js"></script>
+
+  <!-- Main game logic -->
+  <script type="module" src="utama.js"></script>
 </body>
 </html>
